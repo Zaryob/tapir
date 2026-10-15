@@ -14,6 +14,7 @@ The explicit Git URL is required because this repository is named `tapir`.
 | Package | Type | Requirements | Project |
 | --- | --- | --- | --- |
 | `imshark` | Cask | Apple Silicon, macOS 15 Sequoia or later | [ImShark](https://github.com/Zaryob/imshark) |
+| `sdrsentinel` | Cask / Formula | macOS 12 Monterey or later (Apple Silicon & Intel) | [SDRSentinel](https://github.com/Zaryob/SDRPlusPlus) |
 
 ImShark installs `imshark.app` and the `imshark` terminal command. Its current release is ad hoc signed and is not notarized. Open the app from Applications and, if macOS blocks it, allow it in System Settings > Privacy & Security > Open Anyway before using the app or CLI.
 
