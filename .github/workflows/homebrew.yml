@@ -1,0 +1,58 @@
+name: Homebrew
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - Casks/**
+      - Formula/**
+      - .github/workflows/homebrew.yml
+  pull_request:
+    paths:
+      - Casks/**
+      - Formula/**
+      - .github/workflows/homebrew.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cask:
+    name: Validate and install macOS cask
+    runs-on: macos-15
+    timeout-minutes: 15
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+    steps:
+      - uses: actions/checkout@v7
+      - name: Register this checkout as a tap
+        run: brew tap --custom-remote zaryob/tapir "$GITHUB_WORKSPACE"
+      - name: Check cask style
+        run: brew style zaryob/tapir
+      - name: Audit cask and download
+        run: brew audit --tap=zaryob/tapir --online
+      - name: Install published application
+        run: brew install --cask --require-sha --appdir="$RUNNER_TEMP/Applications" zaryob/tapir/imshark
+      - name: Check installed command and bundle
+        run: |
+          app="$RUNNER_TEMP/Applications/imshark.app"
+          cli="$(brew --prefix)/bin/imshark"
+          test -d "$app"
+          test -L "$cli"
+          test -x "$cli"
+          test "$cli" -ef "$app/Contents/MacOS/imshark"
+          expected_version="$(brew info --cask --json=v2 zaryob/tapir/imshark | python3 -c 'import json, sys; print(json.load(sys.stdin)["casks"][0]["version"])')"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app/Contents/Info.plist")" = "$expected_version"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Contents/Info.plist")" = io.github.zaryob.imshark
+          codesign --verify --deep --strict "$app"
+          # Running this ad hoc signed app requires interactive Gatekeeper approval.
+      - name: Uninstall application
+        if: always()
+        run: |
+          if brew list --cask imshark >/dev/null 2>&1; then
+            brew uninstall --cask zaryob/tapir/imshark
+            test ! -e "$RUNNER_TEMP/Applications/imshark.app"
+            test ! -L "$(brew --prefix)/bin/imshark"
+          fi
