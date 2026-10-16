@@ -18,7 +18,7 @@ class Sdrsentinel < Formula
   depends_on "zstd"
 
   def install
-    args = %W[
+    args = %w[
       -DCMAKE_BUILD_TYPE=Release
       -DOPT_BUILD_RF_TOOLS=ON
       -DOPT_BUILD_KRAKEN_DOA=ON
@@ -32,6 +32,6 @@ class Sdrsentinel < Formula
   end
 
   test do
-    assert_predicate bin/"sdrpp", :exist?
+    assert_path_exists bin/"sdrpp"
   end
 end

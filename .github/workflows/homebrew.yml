@@ -18,6 +18,46 @@ permissions:
   contents: read
 
 jobs:
+  formula:
+    name: ${{ matrix.package }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, ubuntu-24.04]
+        package: [docker-tui, iksemel-rs, iksemel, performer-viewer]
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_INSTALL_CLEANUP: 1
+      HOMEBREW_NO_ASK: 1
+      HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+      PACKAGE: zaryob/tapir/${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+      - name: Register this checkout as a tap
+        run: |
+          brew tap --custom-remote zaryob/tapir "$GITHUB_WORKSPACE"
+          if brew command trust >/dev/null 2>&1; then
+            brew trust --formula "$PACKAGE"
+          fi
+      - name: Check formula style and metadata
+        run: |
+          brew style "$PACKAGE"
+          brew audit --formula --strict --online "$PACKAGE"
+          brew fetch --formula "$PACKAGE"
+      - name: Build, install, and test formula
+        run: |
+          brew install --formula --build-from-source "$PACKAGE"
+          brew test "$PACKAGE"
+      - name: Uninstall formula
+        if: always()
+        run: |
+          if brew list --formula "$PACKAGE" >/dev/null 2>&1; then
+            brew uninstall --formula "$PACKAGE"
+          fi
+
   cask:
     name: Validate and install macOS cask
     runs-on: macos-15
@@ -25,10 +65,15 @@ jobs:
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       HOMEBREW_NO_INSTALL_CLEANUP: 1
+      HOMEBREW_NO_ASK: 1
     steps:
       - uses: actions/checkout@v7
       - name: Register this checkout as a tap
-        run: brew tap --custom-remote zaryob/tapir "$GITHUB_WORKSPACE"
+        run: |
+          brew tap --custom-remote zaryob/tapir "$GITHUB_WORKSPACE"
+          if brew command trust >/dev/null 2>&1; then
+            brew trust --cask zaryob/tapir/imshark
+          fi
       - name: Check cask style
         run: brew style zaryob/tapir
       - name: Audit cask and download
