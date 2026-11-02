@@ -15,7 +15,7 @@ If your Homebrew version requires tap trust, run `brew trust zaryob/tapir` after
 | Package | Type | Requirements | Project |
 | --- | --- | --- | --- |
 | `imshark` | Cask | Apple Silicon, macOS 15 Sequoia or later | [ImShark](https://github.com/Zaryob/imshark) |
-| `sdrsentinel` | Cask / Formula | macOS 12 Monterey or later (Apple Silicon & Intel) | [SDRSentinel](https://github.com/Zaryob/SDRPlusPlus) |
+| `sdrsentinel` | Cask / Formula | macOS 12 Monterey or later (Apple Silicon & Intel) | [SDRSentinel](https://github.com/SDRSentinel/sdrsentinel) |
 | `docker-tui` | Formula | macOS or Linux; a running Docker daemon | [docker-tui](https://github.com/Zaryob/docker-tui) |
 | `iksemel-rs` | Formula | macOS or Linux; Rust is needed to build | [iksemel-rs](https://github.com/Zaryob/iksemel-rs) |
 | `iksemel` | Formula | macOS or Linux; C XML parser library | [iksemel](https://github.com/Zaryob/iksemel) |

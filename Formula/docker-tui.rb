@@ -1,8 +1,8 @@
 class DockerTui < Formula
   desc "Keyboard-driven terminal interface for Docker"
   homepage "https://github.com/Zaryob/docker-tui"
-  url "https://github.com/Zaryob/docker-tui/archive/refs/tags/v0.6.0.tar.gz"
-  sha256 "dd0ad706775c0bc2fef8b77dbf9170d75ff25e824758cce9a465f6b3fff7cfc4"
+  url "https://github.com/Zaryob/docker-tui/archive/refs/tags/v0.9.0.tar.gz"
+  sha256 "57ebc0677dae90236a67f39c1ad02381dcf8bdf4a55409ae12c30c03183c9784"
   license "GPL-3.0-or-later"
 
   depends_on "go" => :build

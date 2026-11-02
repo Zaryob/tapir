@@ -1,10 +1,10 @@
 class Sdrsentinel < Formula
   desc "Passive RF signal characterization, pulse analysis, and direction finding suite"
-  homepage "https://github.com/Zaryob/SDRPlusPlus"
-  url "https://github.com/Zaryob/SDRPlusPlus.git", branch: "master"
+  homepage "https://github.com/SDRSentinel/sdrsentinel"
+  url "https://github.com/SDRSentinel/sdrsentinel.git", branch: "master"
   version "1.0.0"
   license "GPL-3.0-or-later"
-  head "https://github.com/Zaryob/SDRPlusPlus.git", branch: "master"
+  head "https://github.com/SDRSentinel/sdrsentinel.git", branch: "master"
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build

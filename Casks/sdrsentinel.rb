@@ -2,10 +2,10 @@ cask "sdrsentinel" do
   version "1.0.0"
   sha256 :no_check
 
-  url "https://github.com/Zaryob/SDRPlusPlus/releases/download/v#{version}/sdrsentinel-macos-arm64.zip"
+  url "https://github.com/SDRSentinel/sdrsentinel/releases/download/v#{version}/sdrsentinel-macos-arm64.zip"
   name "SDRSentinel"
   desc "Passive RF signal characterization, pulse analysis, and direction finding suite"
-  homepage "https://github.com/Zaryob/SDRPlusPlus"
+  homepage "https://github.com/SDRSentinel/sdrsentinel"
 
   livecheck do
     url :url
