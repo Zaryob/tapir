@@ -68,7 +68,7 @@ brew tap --custom-remote tapir/local "$PWD"
 cp Casks/imshark.rb "$(brew --repository tapir/local)/Casks/imshark.rb"
 if brew command trust >/dev/null 2>&1; then brew trust --cask tapir/local/imshark; fi
 brew style tapir/local
-brew audit --tap=tapir/local --online
+brew audit --cask --strict --online tapir/local/imshark
 brew fetch --cask tapir/local/imshark
 
 tapir_appdir="$(mktemp -d)"
@@ -103,7 +103,7 @@ brew untap tapir/local
 
 Repeat with `iksemel-rs`, `iksemel`, or `performer-viewer` to exercise their package tests. The XML tools and C library tests run offline; the viewer test checks its launcher and bundled HTML without opening a browser, and the Docker TUI test uses a nonexistent socket instead of a live daemon.
 
-The full-tap online audit currently reports GitHub 404 for SDRSentinel's configured upstream. Restore access to that repository and release before expecting the full-tap audit to pass. The four additional formulae are audited independently in CI.
+CI audits the ImShark cask and the four additional formulae one by one. SDRSentinel is left out because its configured upstream returns GitHub 404; restore access to that repository and release before adding it to the workflow.
 
 Commit and push validated changes to `main`; users receive them through `brew update`. ImShark's `livecheck` detects published upstream releases for maintainer checks and does not rewrite the cask.
 

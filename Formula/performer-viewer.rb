@@ -5,13 +5,9 @@ class PerformerViewer < Formula
   sha256 "981f7a552bac8afb29e2e1145a0bf17426699f8746b2c79f621b2f68c730497c"
   license "Apache-2.0"
 
-  on_linux do
-    depends_on "xdg-utils"
-  end
-
   def install
     pkgshare.install "viewer/dist/index.html"
-    opener = OS.mac? ? "/usr/bin/open" : formula_opt_bin("xdg-utils")/"xdg-open"
+    opener = OS.mac? ? "/usr/bin/open" : "xdg-open"
 
     (bin/"performer-viewer").write <<~SH
       #!/bin/sh
@@ -33,6 +29,10 @@ class PerformerViewer < Formula
           echo "#{pkgshare}/index.html"
           ;;
         "")
+          if ! command -v "#{opener}" >/dev/null 2>&1; then
+            echo "performer-viewer: #{opener} was not found. Install xdg-utils with your system package manager." >&2
+            exit 1
+          fi
           exec "#{opener}" "#{pkgshare}/index.html"
           ;;
         *)
@@ -49,6 +49,8 @@ class PerformerViewer < Formula
       Run performer-viewer to open the offline viewer, then select or drop a
       Performer .tgz bundle in the browser. No local server is needed.
       The Linux-only performance collector is distributed separately.
+      On Linux the viewer opens with xdg-open, which comes with your
+      distribution's xdg-utils package.
     EOS
   end
 
