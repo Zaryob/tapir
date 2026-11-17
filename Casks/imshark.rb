@@ -1,6 +1,6 @@
 cask "imshark" do
-  version "1.0.0"
-  sha256 "5846b953e068d199496ba47409c3546b7e2177da38974386cf1e5fa66f31975b"
+  version "1.0.1"
+  sha256 "f55c35798ceb3c27a559a6f0cf56995a55a9425ef7120fbfa7ea97594dd982f4"
 
   url "https://github.com/Zaryob/imshark/releases/download/v#{version}/imshark-#{version}-macos-arm64.dmg"
   name "ImShark"
